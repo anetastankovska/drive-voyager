@@ -46,7 +46,6 @@ app.get("/", (req: Request, res: Response) => {
 app.get("/files", async (req: Request, res: Response): Promise<void> => {
   const folderId = req.query.folderId as string;
   if (!folderId) {
-    // Call res.status(...) but do NOT return its value
     res.status(400).json({ error: "folderId query parameter is required" });
     return; // End the function here
   }
@@ -56,7 +55,6 @@ app.get("/files", async (req: Request, res: Response): Promise<void> => {
       q: `'${folderId}' in parents and trashed=false`,
       fields: "files(id, name, mimeType)",
     });
-    // Simply call res.json(...) again, no "return" in front
     res.json(response.data.files);
   } catch (error) {
     console.error("Error listing files:", error);
@@ -64,7 +62,6 @@ app.get("/files", async (req: Request, res: Response): Promise<void> => {
   }
 });
 
-// Extend the file type to support recursive folder structure
 interface FolderTree {
   id?: string;
   name?: string;
